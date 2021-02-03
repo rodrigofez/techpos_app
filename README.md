@@ -1,4 +1,4 @@
-# NodePos
+# techPOS
 
 A new Flutter project.
 
