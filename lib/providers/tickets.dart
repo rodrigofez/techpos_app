@@ -171,44 +171,43 @@ class Tickets with ChangeNotifier {
     automationName,
   }) async {
     try {
-      await loadCurrentTerminalTicket(ticketId);
-      try {
-        dynamic response = await DataGQL().cQuery(
-          SambaQuery().executeAutomationCommandForOrder(
-            automationName: automationName,
-            terminalId: _terminalId,
-            orderUid: orderUid,
-          ),
-          uri,
-          token,
-        );
-        print('THIS IS THE CURRENT STATE OF THE TICKET : $response');
-        final newOrderState = (response['data']
-                    ['executeAutomationCommandForTerminalTicket']['orders']
-                .toList() as List)
-            .firstWhere((order) => order['uid'] == orderUid)['states']
-            .toList();
-        // print(newOrderState);
-        //check if order already has an automation command executed
-        if (currentOrdersStates
-            .any((element) => element.toString().contains(orderUid))) {
-          currentOrdersStates
-              .removeWhere((element) => element.toString().contains(orderUid));
-          currentOrdersStates.add({
-            'orderUid': orderUid,
-            'currentState': newOrderState,
-            'ticketId': ticketId,
-          });
-        } else {
-          currentOrdersStates.add({
-            'orderUid': orderUid,
-            'currentState': newOrderState,
-            'ticketId': ticketId,
-          });
-        }
-        notifyListeners();
-      } catch (error) {}
-    } catch (error) {}
+      dynamic response = await DataGQL().cQuery(
+        SambaQuery().executeAutomationCommandForOrder(
+          automationName: automationName,
+          terminalId: _terminalId,
+          orderUid: orderUid,
+        ),
+        uri,
+        token,
+      );
+      print('THIS IS THE CURRENT STATE OF THE TICKET : $response');
+      final newOrderState = (response['data']
+                  ['executeAutomationCommandForTerminalTicket']['orders']
+              .toList() as List)
+          .firstWhere((order) => order['uid'] == orderUid)['states']
+          .toList();
+      // print(newOrderState);
+      //check if order already has an automation command executed
+      if (currentOrdersStates
+          .any((element) => element.toString().contains(orderUid))) {
+        currentOrdersStates
+            .removeWhere((element) => element.toString().contains(orderUid));
+        currentOrdersStates.add({
+          'orderUid': orderUid,
+          'currentState': newOrderState,
+          'ticketId': ticketId,
+        });
+      } else {
+        currentOrdersStates.add({
+          'orderUid': orderUid,
+          'currentState': newOrderState,
+          'ticketId': ticketId,
+        });
+      }
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<void> refreshNotification() async {

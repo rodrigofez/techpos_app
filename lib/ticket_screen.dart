@@ -753,7 +753,6 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                                 element['quantity'])) +
                                 (Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].price *
                                     Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].quantity);
-                            // Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['quantity']
 
                             //Setting states string
                             String orderStates = '';
@@ -812,255 +811,6 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                       ticketId: Provider.of<Tickets>(context, listen: false).selectedTicketToModify.id,
                                       automationName: value['commandName'],
                                     );
-                                    //   print(Provider.of<Tickets>(context,
-                                    //           listen: false)
-                                    //       .commandsToExecute);
-                                    //   setState(() {
-                                    //     if (value['commandName'].toLowerCase() ==
-                                    //         "void") {
-                                    //       if (Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .any((command) {
-                                    //         if (command.toString().contains(
-                                    //                 ticket["data"]
-                                    //                     .id
-                                    //                     .toString()) &&
-                                    //             command
-                                    //                 .toString()
-                                    //                 .contains('Cancel Void') &&
-                                    //             command.toString().contains(
-                                    //                 value['orderUid'])) {
-                                    //           return true;
-                                    //         } else {
-                                    //           return false;
-                                    //         }
-                                    //       })) {
-                                    //         final indexFoundCommand =
-                                    //             Provider.of<Tickets>(context,
-                                    //                     listen: false)
-                                    //                 .commandsToExecute
-                                    //                 .indexWhere((command) {
-                                    //           if (command.toString().contains(
-                                    //                   ticket["data"]
-                                    //                       .id
-                                    //                       .toString()) &&
-                                    //               command
-                                    //                   .toString()
-                                    //                   .contains('Cancel Void') &&
-                                    //               command.toString().contains(
-                                    //                   value['orderUid'])) {
-                                    //             return true;
-                                    //           } else {
-                                    //             return false;
-                                    //           }
-                                    //         });
-                                    //         Provider.of<Tickets>(context,
-                                    //                 listen: false)
-                                    //             .commandsToExecute
-                                    //             .removeAt(indexFoundCommand);
-                                    //       }
-                                    //       Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .add({
-                                    //         'commandName': value['commandName'],
-                                    //         'orderUid': value['orderUid'],
-                                    //         'ticketId':
-                                    //             ticket["data"].id.toString(),
-                                    //       });
-                                    //     } else if (value['commandName']
-                                    //             .toLowerCase() ==
-                                    //         "cancel void") {
-                                    //       if (Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .any((command) {
-                                    //         if (command.toString().contains(
-                                    //                 ticket["data"]
-                                    //                     .id
-                                    //                     .toString()) &&
-                                    //             command
-                                    //                 .toString()
-                                    //                 .contains('Void') &&
-                                    //             command.toString().contains(
-                                    //                 value['orderUid'])) {
-                                    //           return true;
-                                    //         } else {
-                                    //           return false;
-                                    //         }
-                                    //       })) {
-                                    //         final indexFoundCommand =
-                                    //             Provider.of<Tickets>(context,
-                                    //                     listen: false)
-                                    //                 .commandsToExecute
-                                    //                 .indexWhere((command) {
-                                    //           if (command.toString().contains(
-                                    //                   ticket["data"]
-                                    //                       .id
-                                    //                       .toString()) &&
-                                    //               command
-                                    //                   .toString()
-                                    //                   .contains('Void') &&
-                                    //               command.toString().contains(
-                                    //                   value['orderUid'])) {
-                                    //             return true;
-                                    //           } else {
-                                    //             return false;
-                                    //           }
-                                    //         });
-                                    //         Provider.of<Tickets>(context,
-                                    //                 listen: false)
-                                    //             .commandsToExecute
-                                    //             .removeAt(indexFoundCommand);
-                                    //       }
-                                    //       Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .add({
-                                    //         'commandName': value['commandName'],
-                                    //         'orderUid': value['orderUid'],
-                                    //         'ticketId':
-                                    //             ticket["data"].id.toString(),
-                                    //       });
-                                    //     } else if (value['commandName']
-                                    //             .toLowerCase() ==
-                                    //         "gift") {
-                                    //       if (Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .any((command) {
-                                    //         if (command.toString().contains(
-                                    //                 ticket["data"]
-                                    //                     .id
-                                    //                     .toString()) &&
-                                    //             command
-                                    //                 .toString()
-                                    //                 .contains('Cancel Gift') &&
-                                    //             command.toString().contains(
-                                    //                 value['orderUid'])) {
-                                    //           return true;
-                                    //         } else {
-                                    //           return false;
-                                    //         }
-                                    //       })) {
-                                    //         final indexFoundCommand =
-                                    //             Provider.of<Tickets>(context,
-                                    //                     listen: false)
-                                    //                 .commandsToExecute
-                                    //                 .indexWhere((command) {
-                                    //           if (command.toString().contains(
-                                    //                   ticket["data"]
-                                    //                       .id
-                                    //                       .toString()) &&
-                                    //               command
-                                    //                   .toString()
-                                    //                   .contains('Cancel Gift') &&
-                                    //               command.toString().contains(
-                                    //                   value['orderUid'])) {
-                                    //             return true;
-                                    //           } else {
-                                    //             return false;
-                                    //           }
-                                    //         });
-                                    //         Provider.of<Tickets>(context,
-                                    //                 listen: false)
-                                    //             .commandsToExecute
-                                    //             .removeAt(indexFoundCommand);
-                                    //       }
-                                    //       Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .add({
-                                    //         'commandName': value['commandName'],
-                                    //         'orderUid': value['orderUid'],
-                                    //         'ticketId':
-                                    //             ticket["data"].id.toString(),
-                                    //       });
-                                    //     } else if (value['commandName']
-                                    //             .toLowerCase() ==
-                                    //         "cancel gift") {
-                                    //       if (Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .any((command) {
-                                    //         if (command.toString().contains(
-                                    //                 ticket["data"]
-                                    //                     .id
-                                    //                     .toString()) &&
-                                    //             command
-                                    //                 .toString()
-                                    //                 .contains('Gift') &&
-                                    //             command.toString().contains(
-                                    //                 value['orderUid'])) {
-                                    //           return true;
-                                    //         } else {
-                                    //           return false;
-                                    //         }
-                                    //       })) {
-                                    //         final indexFoundCommand =
-                                    //             Provider.of<Tickets>(context,
-                                    //                     listen: false)
-                                    //                 .commandsToExecute
-                                    //                 .indexWhere((command) {
-                                    //           if (command.toString().contains(
-                                    //                   ticket["data"]
-                                    //                       .id
-                                    //                       .toString()) &&
-                                    //               command
-                                    //                   .toString()
-                                    //                   .contains('Gift') &&
-                                    //               command.toString().contains(
-                                    //                   value['orderUid'])) {
-                                    //             return true;
-                                    //           } else {
-                                    //             return false;
-                                    //           }
-                                    //         });
-                                    //         Provider.of<Tickets>(context,
-                                    //                 listen: false)
-                                    //             .commandsToExecute
-                                    //             .removeAt(indexFoundCommand);
-                                    //       }
-                                    //       Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .add({
-                                    //         'commandName': value['commandName'],
-                                    //         'orderUid': value['orderUid'],
-                                    //         'ticketId':
-                                    //             ticket["data"].id.toString(),
-                                    //       });
-                                    //     } else {
-                                    //       if (!Provider.of<Tickets>(context,
-                                    //               listen: false)
-                                    //           .commandsToExecute
-                                    //           .any((command) {
-                                    //         if (command.toString().contains(
-                                    //                 ticket["data"]
-                                    //                     .id
-                                    //                     .toString()) &&
-                                    //             command.toString().contains(
-                                    //                 value['commandName']) &&
-                                    //             command.toString().contains(
-                                    //                 value['orderUid'])) {
-                                    //           return true;
-                                    //         } else {
-                                    //           return false;
-                                    //         }
-                                    //       })) {
-                                    //         Provider.of<Tickets>(context,
-                                    //                 listen: false)
-                                    //             .commandsToExecute
-                                    //             .add({
-                                    //           'commandName': value['commandName'],
-                                    //           'orderUid': value['orderUid'],
-                                    //           'ticketId':
-                                    //               ticket["data"].id.toString(),
-                                    //         });
-                                    //       }
-                                    //     }
-                                    //   });
                                   },
                                   itemBuilder: (BuildContext context) =>
                                       <PopupMenuEntry<Map>>[
@@ -1068,7 +818,6 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                             listen: false)
                                         .selectedOrderAutomation
                                         .where((automation) {
-                                          //TODO: check all status
                                           final statesLength =
                                               currentOrderStates
                                                   .toList()
@@ -1128,14 +877,7 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                                     .toString(),
                                               ),
                                             ))
-                                    // const PopupMenuItem<String>(
-                                    //   value: 'gift',
-                                    //   child: Text('Regalo'),
-                                    // ),
-                                    // const PopupMenuItem<String>(
-                                    //   value: 'void',
-                                    //   child: Text('Anular'),
-                                    // ),
+                               
                                   ],
                                   child: ListTile(
                                     tileColor: Colors.black.withOpacity(0.03),

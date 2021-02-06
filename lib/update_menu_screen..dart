@@ -21,7 +21,6 @@ class UpdateMenuScreen extends StatelessWidget {
           ),
         ),
       ),
-      // backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

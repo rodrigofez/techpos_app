@@ -430,20 +430,33 @@ class _TablesGridState extends State<TablesGrid> {
                                       .selectedTicketToModify =
                                   Provider.of<Tickets>(context, listen: false)
                                       .tempTickets[0];
-                                      print('HOLASAAA');
-                                      print(Provider.of<Tickets>(context, listen: false)
-                                      .selectedTicketToModify);
-                              Navigator.of(context).popAndPushNamed(
-                                  TicketScreen.routeName,
-                                  arguments: {
-                                    'entityIsEmpty': true,
-                                    'isNewTicket': true,
-                                    'entityName':
-                                        snapshot.data[i]['name'] != null
-                                            ? '${snapshot.data[i]['name']}'
-                                            : 'Null',
-                                    'entityType': widget.entityType,
-                                  });
+                              Provider.of<Tickets>(context, listen: false)
+                                  .loadCurrentTerminalTicket(
+                                      Provider.of<Tickets>(context,
+                                              listen: false)
+                                          .tempTickets[0]
+                                          .id
+                                          .toString())
+                                  .then((value) => Navigator.of(context)
+                                          .popAndPushNamed(
+                                              TicketScreen.routeName,
+                                              arguments: {
+                                            'entityIsEmpty': true,
+                                            'isNewTicket': true,
+                                            'entityName': snapshot.data[i]
+                                                        ['name'] !=
+                                                    null
+                                                ? '${snapshot.data[i]['name']}'
+                                                : 'Null',
+                                            'entityType': widget.entityType,
+                                          }))
+                                  .catchError((error) {
+                                Navigator.of(context).pop();
+                                Scaffold.of(context).removeCurrentSnackBar();
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text('No se ha podido abrir'),
+                                ));
+                              });
                             } else {
                               Navigator.of(context).popAndPushNamed(
                                   SelectTicketScreen.routeName,
@@ -565,47 +578,60 @@ class _TablesGridState extends State<TablesGrid> {
 
                             Provider.of<Tickets>(context, listen: false)
                                 .getLastTicketsOfEntity(
-                                  snapshot.data[i]['name'],
-                                  widget.entityType,
-                                )
-                                .then((value) { 
-                                  
-                            if (Provider.of<Tickets>(context, listen: false)
-                                    .tempTickets
-                                    .length ==
-                                1) {
-                              Provider.of<Tickets>(context, listen: false)
-                                      .selectedTicketToModify =
-                                  Provider.of<Tickets>(context, listen: false)
-                                      .tempTickets[0];
-                                      print('HOLASAAA');
-                                      print(Provider.of<Tickets>(context, listen: false)
-                                      .selectedTicketToModify);
-                              Navigator.of(context).popAndPushNamed(
-                                  TicketScreen.routeName,
-                                  arguments: {
-                                    'entityIsEmpty': true,
-                                    'isNewTicket': true,
-                                    'entityName':
-                                        snapshot.data[i]['name'] != null
-                                            ? '${snapshot.data[i]['name']}'
-                                            : 'Null',
-                                    'entityType': widget.entityType,
-                                  });
-                            } else {
-                              Navigator.of(context).popAndPushNamed(
-                                  SelectTicketScreen.routeName,
-                                  arguments: {
-                                    'entityIsEmpty': true,
-                                    'isNewTicket': true,
-                                    'entityName':
-                                        snapshot.data[i]['name'] != null
-                                            ? '${snapshot.data[i]['name']}'
-                                            : 'Null',
-                                    'entityType': widget.entityType,
-                                  });
-                            }
+                              snapshot.data[i]['name'],
+                              widget.entityType,
+                            )
+                                .then((value) {
+                              if (Provider.of<Tickets>(context, listen: false)
+                                      .tempTickets
+                                      .length ==
+                                  1) {
+                                Provider.of<Tickets>(context, listen: false)
+                                        .selectedTicketToModify =
+                                    Provider.of<Tickets>(context, listen: false)
+                                        .tempTickets[0];
+
+                                Provider.of<Tickets>(context, listen: false)
+                                    .loadCurrentTerminalTicket(
+                                        Provider.of<Tickets>(context,
+                                                listen: false)
+                                            .tempTickets[0]
+                                            .id
+                                            .toString())
+                                    .then((value) => Navigator.of(context)
+                                            .popAndPushNamed(
+                                                TicketScreen.routeName,
+                                                arguments: {
+                                              'entityIsEmpty': true,
+                                              'isNewTicket': true,
+                                              'entityName': snapshot.data[i]
+                                                          ['name'] !=
+                                                      null
+                                                  ? '${snapshot.data[i]['name']}'
+                                                  : 'Null',
+                                              'entityType': widget.entityType,
+                                            }))
+                                    .catchError((error) {
+                                  Navigator.of(context).pop();
+                                  Scaffold.of(context).removeCurrentSnackBar();
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text('No se ha podido abrir'),
+                                  ));
                                 });
+                              } else {
+                                Navigator.of(context).popAndPushNamed(
+                                    SelectTicketScreen.routeName,
+                                    arguments: {
+                                      'entityIsEmpty': true,
+                                      'isNewTicket': true,
+                                      'entityName':
+                                          snapshot.data[i]['name'] != null
+                                              ? '${snapshot.data[i]['name']}'
+                                              : 'Null',
+                                      'entityType': widget.entityType,
+                                    });
+                              }
+                            });
                           }
                         });
                       }).catchError((error) {
