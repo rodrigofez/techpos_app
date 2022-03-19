@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:NodePos/config/querys.dart';
 import 'package:NodePos/providers/data.dart';
 import 'package:flutter/cupertino.dart';
@@ -686,7 +684,6 @@ class Tickets with ChangeNotifier {
     automationValue,
   }) async {
     try {
-      await loadCurrentTerminalTicket(_selectedTicketToModify.id);
       await DataGQL().cQuery(
         SambaQuery().executeAutomationCommandForTicket(
           terminalId: _terminalId,

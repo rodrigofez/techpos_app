@@ -29,7 +29,7 @@ dependencies:
   shared_preferences: ^0.5.12+2
   flutter_svg: ^0.19.1
   auto_size_text: ^2.1.0
-  flutter_webview_plugin: ^0.3.11
+  flutter_webview_plugin: ^0.4.0
   smooth_page_indicator: ^0.2.0
   intl: ^0.16.1
 

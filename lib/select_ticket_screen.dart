@@ -638,31 +638,7 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                     'Nueva orden',
                                   ),
                                 ),
-                                PopupMenuButton<String>(
-                                  onSelected: (String value) {
-                                    //TODO: REMOVER TEMP ORDER DE TEMP TICKET
-                                    // setState(() {
-                                    //   (
-                                    // });
-                                    setState(() {
-                                      Provider.of<Tickets>(context,
-                                              listen: false)
-                                          .tempTickets
-                                          .firstWhere((tempTicket) =>
-                                              tempTicket.id.toString() ==
-                                              ticket['data'].id.toString())
-                                          .tempOrders
-                                          .removeAt(orderIndex);
-                                    });
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<String>>[
-                                    const PopupMenuItem<String>(
-                                      value: 'Eliminar',
-                                      child: Text('Eliminar'),
-                                    ),
-                                  ],
-                                  child: ListTile(
+                                ListTile(
                                     tileColor: Colors.black.withOpacity(0.03),
                                     contentPadding: EdgeInsets.symmetric(
                                       vertical: 6,
@@ -808,7 +784,7 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                       ),
                                     ),
                                   ),
-                                ),
+                                
                                 Divider(
                                   height: 0,
                                 ),
@@ -881,82 +857,8 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                   padding: EdgeInsets.symmetric(vertical: 4),
                                   child: Text(orderStates),
                                 ),
-                                PopupMenuButton<Map>(
-                                  onSelected: (Map value) {
-                                    Provider.of<Tickets>(context, listen: false)
-                                        .executeAutomationCommandForOrder(
-                                      orderUid: value['orderUid'],
-                                      ticketId: ticket["data"].id,
-                                      automationName: value['commandName'],
-                                    );
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<Map>>[
-                                    ...Provider.of<Config>(context,
-                                            listen: false)
-                                        .selectedOrderAutomation
-                                        .where((automation) {
-                                          final statesLength =
-                                              currentOrderStates
-                                                  .toList()
-                                                  .length;
-                                          for (int index = 0;
-                                              index < statesLength;
-                                              index++) {
-                                            if (automation['EnablesStates']
-                                                .toString()
-                                                .contains(
-                                                    currentOrderStates[index]
-                                                        ['state'])) {
-                                              return true;
-                                            } else {
-                                              if (automation['EnablesStates'] ==
-                                                      '*' ||
-                                                  automation['EnablesStates'] ==
-                                                      null ||
-                                                  automation['EnablesStates'] ==
-                                                      '' ||
-                                                  automation['EnablesStates'] ==
-                                                      'GStatus=') {
-                                                return true;
-                                              }
-                                            }
-                                          }
-                                          return false;
-                                        })
-                                        .toList()
-                                        .map((command) => PopupMenuItem<Map>(
-                                              enabled: (currentOrderStates).any(
-                                                      (element) => command[
-                                                              'VisibleStates']
-                                                          .toString()
-                                                          .contains(
-                                                              element['state']))
-                                                  ? true
-                                                  : (command['VisibleStates'] ==
-                                                              '*' ||
-                                                          command['VisibleStates'] ==
-                                                              null ||
-                                                          command['VisibleStates'] ==
-                                                              '' ||
-                                                          command['VisibleStates'] ==
-                                                              'GStatus=')
-                                                      ? true
-                                                      : false,
-                                              value: {
-                                                'commandName':
-                                                    command['Name'].toString(),
-                                                'orderUid': ticket["data"]
-                                                    .orders[orderIndex]
-                                                    .uid,
-                                              },
-                                              child: Text(
-                                                command['ButtonHeader']
-                                                    .toString(),
-                                              ),
-                                            ))
-                                  ],
-                                  child: ListTile(
+                                ListTile(
+                            
                                     tileColor: Colors.black.withOpacity(0.03),
                                     contentPadding: EdgeInsets.symmetric(
                                       vertical: 6,
@@ -1115,7 +1017,7 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
                                       ),
                                     ),
                                   ),
-                                ),
+                                
                                 Divider(
                                   height: 0,
                                 ),

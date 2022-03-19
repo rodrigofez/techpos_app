@@ -92,8 +92,6 @@ class TicketsRightPanel extends StatefulWidget {
     this.entityName,
   });
 
-  
-
   @override
   _TicketsRightPanelState createState() => _TicketsRightPanelState();
 }
@@ -104,15 +102,16 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
 
   var tickets = [];
   var newTickets = [];
-  // final 
+  // final
 
   @override
   void didChangeDependencies() {
-
-    tickets = [{
-          'isExpanded': true,
-          'data': Provider.of<Tickets>(context).selectedTicketToModify,
-        }];
+    tickets = [
+      {
+        'isExpanded': true,
+        'data': Provider.of<Tickets>(context).selectedTicketToModify,
+      }
+    ];
     final newTicketsData = Provider.of<Tickets>(context).ticketsToAdd;
     newTickets = List.generate(newTicketsData.length, (index) {
       return {
@@ -444,633 +443,673 @@ class _TicketsRightPanelState extends State<TicketsRightPanel> {
 
                 //TICKETS YA AÑADIDOS
                 ExpansionPanel(
-                    canTapOnHeader: true,
-                    headerBuilder: (BuildContext context, bool isExpanded) {
-                      return ListTile(
-                        // tileColor: selectedTicketNumber == Provider.of<Tickets>(context).selectedTicketToModify.number
-                        //     ? Colors.blueAccent.withOpacity(0.1)
-                        //     : null,
+                  canTapOnHeader: true,
+                  headerBuilder: (BuildContext context, bool isExpanded) {
+                    return ListTile(
+                      // tileColor: selectedTicketNumber == Provider.of<Tickets>(context).selectedTicketToModify.number
+                      //     ? Colors.blueAccent.withOpacity(0.1)
+                      //     : null,
 
-                        onLongPress: () {
+                      onLongPress: () {},
+                      title: Text(
+                          '#${Provider.of<Tickets>(context).selectedTicketToModify.number}'),
+                      subtitle: Text((Provider.of<Tickets>(context)
+                              .selectedTicketToModify
+                              .states)
+                          .firstWhere((element) =>
+                              element['stateName'] == 'Status')['state']),
+                      leading: selectedTicketNumber ==
+                              Provider.of<Tickets>(context)
+                                  .selectedTicketToModify
+                                  .id
+                                  .toString()
+                          ? Icon(Icons.check_circle, color: Colors.blueAccent)
+                          : null,
+                    );
+                  },
+                  body: Column(
+                    children: [
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              'Selección de cliente',
+                            ),
+                            subtitle: Text(
+                                '${Provider.of<Tickets>(context).selectedClientsToAdd.where((element) => element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id).toList()[index]['clientName'].toString()}'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                Provider.of<Tickets>(context, listen: false)
+                                    .selectedClientsToAdd
+                                    .removeWhere((element) =>
+                                        element['ticketId'] ==
+                                        Provider.of<Tickets>(context,
+                                                listen: false)
+                                            .selectedClientsToAdd
+                                            .where((element) =>
+                                                element['ticketId'] ==
+                                                Provider.of<Tickets>(context)
+                                                    .selectedTicketToModify
+                                                    .id)
+                                            .toList()[index]['ticketId']);
+                                Provider.of<Tickets>(context, listen: false)
+                                    .notifyListeners();
+                              },
+                            ),
+                          );
                         },
-                        title: Text('#${Provider.of<Tickets>(context).selectedTicketToModify.number}'),
-                        subtitle: Text((Provider.of<Tickets>(context).selectedTicketToModify.states)
-                            .firstWhere((element) =>
-                                element['stateName'] == 'Status')['state']),
-                        leading: selectedTicketNumber ==
-                                Provider.of<Tickets>(context).selectedTicketToModify.id.toString()
-                            ? Icon(Icons.check_circle, color: Colors.blueAccent)
-                            : null,
-                      );
-                    },
-                    body: Column(
-                      children: [
-                        ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                'Selección de cliente',
-                              ),
-                              subtitle: Text(
-                                  '${Provider.of<Tickets>(context).selectedClientsToAdd.where((element) => element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id).toList()[index]['clientName'].toString()}'),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  Provider.of<Tickets>(context, listen: false)
-                                      .selectedClientsToAdd
-                                      .removeWhere((element) =>
-                                          element['ticketId'] ==
-                                          Provider.of<Tickets>(context,
-                                                  listen: false)
-                                              .selectedClientsToAdd
-                                              .where((element) =>
-                                                  element['ticketId'] ==
-                                                  Provider.of<Tickets>(context).selectedTicketToModify.id)
-                                              .toList()[index]['ticketId']);
-                                  Provider.of<Tickets>(context, listen: false)
-                                      .notifyListeners();
-                                },
-                              ),
-                            );
-                          },
-                          itemCount: Provider.of<Tickets>(context)
-                              .selectedClientsToAdd
-                              .where((element) =>
-                                  element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id)
-                              .length,
-                        ),
-                        ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                'Cambio de mesa',
-                              ),
-                              subtitle: Text(
-                                  '${Provider.of<Tickets>(context).selectedEntityToChange.where((element) => element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id).toList()[index]['entityName'].toString()}'),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  Provider.of<Tickets>(context, listen: false)
-                                      .selectedEntityToChange
-                                      .removeWhere((element) =>
-                                          element['ticketId'] ==
-                                          Provider.of<Tickets>(context,
-                                                  listen: false)
-                                              .selectedEntityToChange
-                                              .where((element) =>
-                                                  element['ticketId'] ==
-                                                  Provider.of<Tickets>(context).selectedTicketToModify.id)
-                                              .toList()[index]['ticketId']);
-                                  Provider.of<Tickets>(context, listen: false)
-                                      .notifyListeners();
-                                },
-                              ),
-                            );
-                          },
-                          itemCount: Provider.of<Tickets>(context)
-                              .selectedEntityToChange
-                              .where((element) =>
-                                  element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id)
-                              .length,
-                        ),
-                        //temporders
-                        ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemCount: Provider.of<Tickets>(context).selectedTicketToModify.tempOrders != null
-                              ? Provider.of<Tickets>(context).selectedTicketToModify.tempOrders.length
-                              : 0,
-                          itemBuilder: (ctx, orderIndex) {
-                            final orderTotalAmount =
-                                Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['total'];
+                        itemCount: Provider.of<Tickets>(context)
+                            .selectedClientsToAdd
+                            .where((element) =>
+                                element['ticketId'] ==
+                                Provider.of<Tickets>(context)
+                                    .selectedTicketToModify
+                                    .id)
+                            .length,
+                      ),
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              'Cambio de mesa',
+                            ),
+                            subtitle: Text(
+                                '${Provider.of<Tickets>(context).selectedEntityToChange.where((element) => element['ticketId'] == Provider.of<Tickets>(context).selectedTicketToModify.id).toList()[index]['entityName'].toString()}'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                Provider.of<Tickets>(context, listen: false)
+                                    .selectedEntityToChange
+                                    .removeWhere((element) =>
+                                        element['ticketId'] ==
+                                        Provider.of<Tickets>(context,
+                                                listen: false)
+                                            .selectedEntityToChange
+                                            .where((element) =>
+                                                element['ticketId'] ==
+                                                Provider.of<Tickets>(context)
+                                                    .selectedTicketToModify
+                                                    .id)
+                                            .toList()[index]['ticketId']);
+                                Provider.of<Tickets>(context, listen: false)
+                                    .notifyListeners();
+                              },
+                            ),
+                          );
+                        },
+                        itemCount: Provider.of<Tickets>(context)
+                            .selectedEntityToChange
+                            .where((element) =>
+                                element['ticketId'] ==
+                                Provider.of<Tickets>(context)
+                                    .selectedTicketToModify
+                                    .id)
+                            .length,
+                      ),
+                      //temporders
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: Provider.of<Tickets>(context)
+                                    .selectedTicketToModify
+                                    .tempOrders !=
+                                null
+                            ? Provider.of<Tickets>(context)
+                                .selectedTicketToModify
+                                .tempOrders
+                                .length
+                            : 0,
+                        itemBuilder: (ctx, orderIndex) {
+                          final orderTotalAmount = Provider.of<Tickets>(context)
+                              .selectedTicketToModify
+                              .tempOrders[orderIndex]['total'];
 
-                            // Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['quantity']
-                            return Column(
-                              key: Key(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]
-                                  ['date']),
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 4),
-                                  child: Text(
-                                    'Nueva orden',
-                                  ),
-                                ),
-                                PopupMenuButton<String>(
-                                  onSelected: (String value) {
-                                    //TODO: REMOVER TEMP ORDER DE TEMP TICKET
-                                    // setState(() {
-                                    //   (
-                                    // });
-                                    setState(() {
-                                      Provider.of<Tickets>(context,
-                                              listen: false)
-                                          .tempTickets
-                                          .firstWhere((tempTicket) =>
-                                              tempTicket.id.toString() ==
-                                              Provider.of<Tickets>(context).selectedTicketToModify.id.toString())
-                                          .tempOrders
-                                          .removeAt(orderIndex);
-                                    });
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<String>>[
-                                    const PopupMenuItem<String>(
-                                      value: 'Eliminar',
-                                      child: Text('Eliminar'),
-                                    ),
-                                  ],
-                                  child: ListTile(
-                                    tileColor: Colors.black.withOpacity(0.03),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 6,
-                                    ),
-                                    title: Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12.0),
-                                              child: Text(
-                                                Provider.of<Tickets>(context).selectedTicketToModify
-                                                    .tempOrders[orderIndex]
-                                                        ['order']
-                                                    .quantity
-                                                    .toString(),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  AutoSizeText(
-                                                    Provider.of<Tickets>(context).selectedTicketToModify
-                                                        .tempOrders[orderIndex]
-                                                            ['order']
-                                                        .name,
-                                                    maxFontSize: 14,
-                                                    // maxLines:
-                                                    //     2,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      AutoSizeText(
-                                                        Provider.of<Tickets>(context).selectedTicketToModify
-                                                            .tempOrders[
-                                                                orderIndex]
-                                                                ['order']
-                                                            .portion['name'],
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        maxFontSize: 12,
-                                                        minFontSize: 8,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black54,
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      AutoSizeText(
-                                                        "\$${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].portion['price'] as double).toStringAsFixed(2)}",
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        maxFontSize: 12,
-                                                        minFontSize: 8,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black54,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  ListView.builder(
-                                                    primary: false,
-                                                    shrinkWrap: true,
-                                                    itemBuilder:
-                                                        (ctx, iterTags) {
-                                                      return Row(
-                                                        children: [
-                                                          AutoSizeText(
-                                                            '${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['quantity']).toInt()} x ${Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['tag']}',
-                                                            maxFontSize: 12,
-                                                            minFontSize: 8,
-                                                          ),
-                                                          Spacer(),
-                                                          AutoSizeText(
-                                                            '\$${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['price'] as double).toStringAsFixed(2)}',
-                                                            maxFontSize: 12,
-                                                            minFontSize: 8,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                    itemCount: Provider.of<Tickets>(context).selectedTicketToModify
-                                                        .tempOrders[orderIndex]
-                                                            ['order']
-                                                        .tags
-                                                        .length,
-                                                  ),
-                                                  Divider(),
-                                                  Row(children: [
-                                                    AutoSizeText(
-                                                      "Total",
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      maxFontSize: 12,
-                                                      minFontSize: 8,
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                                                    Spacer(),
-                                                    AutoSizeText(
-                                                      '\$${(orderTotalAmount as double).toStringAsFixed(2)}',
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      maxFontSize: 12,
-                                                      minFontSize: 8,
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.blue,
-                                                      ),
-                                                    ),
-                                                  ]),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 0,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          itemCount: Provider.of<Tickets>(context).selectedTicketToModify.orders.length,
-                          itemBuilder: (ctx, orderIndex) {
-                            final orderTotalAmount = (Provider.of<Tickets>(context).selectedTicketToModify
-                                        .orders[orderIndex]
-                                        .tags as List)
-                                    .fold(
-                                        0,
-                                        (previousValue, element) =>
-                                            previousValue +
-                                            (element['price'] *
-                                                element['quantity'])) +
-                                (Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].price *
-                                    Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].quantity);
-
-                            //Setting states string
-                            String orderStates = '';
-                            List currentOrderStates = [];
-                            if (Provider.of<Tickets>(context)
-                                .currentOrdersStates
-                                .any((element) => element.toString().contains(
-                                    Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].uid))) {
-                              currentOrderStates = Provider.of<Tickets>(context)
-                                  .currentOrdersStates
-                                  .firstWhere((element) => element
-                                      .toString()
-                                      .contains(Provider.of<Tickets>(context).selectedTicketToModify
-                                          .orders[orderIndex]
-                                          .uid))['currentState'];
-                              orderStates =
-                                  '${currentOrderStates.firstWhere((state) => state["stateName"] == "Status")["state"]}' +
-                                      '${(currentOrderStates as List).firstWhere((element) => element['stateName'] == 'GStatus', orElse: () => null) != null ? ', ' + (currentOrderStates as List).firstWhere((element) => element['stateName'] == 'GStatus')['state'] : ''}';
-                              // orderStates = '';
-                            } else {
-                              currentOrderStates =
-                                  Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states;
-                              orderStates =
-                                  '${Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states.firstWhere((state) => state["stateName"] == "Status")["state"]}' +
-                                      '${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states as List).firstWhere((element) => element['stateName'] == 'GStatus', orElse: () => null) != null ? ', ' + (Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states as List).firstWhere((element) => element['stateName'] == 'GStatus')['state'] : ''}';
-                            }
-
-                            //SETTING COLOR FOR VOID TICKET
-
-                            final normalTextStateColor =
-                                orderStates.contains('Void')
-                                    ? Colors.grey
-                                    : Colors.black;
-                            final totalTextStateColor =
-                                orderStates.contains('Void')
-                                    ? Colors.grey
-                                    : Colors.blue;
-                            final secondaryTextStateColor =
-                                orderStates.contains('Void')
-                                    ? Colors.grey
-                                    : Colors.black54;
-
-                            return Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 4),
-                                  child: Text(orderStates
-                                      // ', ${Provider.of<Tickets>(context).commandsToExecute.where((element) => element.toString().contains(ticket["data"].orders[orderIndex].uid)).map((e) => e['commandName']).toList().join(', ')}',
-                                      ),
-                                ),
-                                PopupMenuButton<Map>(
-                                  onSelected: (Map value) {
-                                    Provider.of<Tickets>(context, listen: false)
-                                        .executeAutomationCommandForOrder(
-                                      orderUid: value['orderUid'],
-                                      ticketId: Provider.of<Tickets>(context, listen: false).selectedTicketToModify.id,
-                                      automationName: value['commandName'],
-                                    );
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<Map>>[
-                                    ...Provider.of<Config>(context,
-                                            listen: false)
-                                        .selectedOrderAutomation
-                                        .where((automation) {
-                                          final statesLength =
-                                              currentOrderStates
-                                                  .toList()
-                                                  .length;
-                                          for (int index = 0;
-                                              index < statesLength;
-                                              index++) {
-                                            if (automation['EnablesStates']
-                                                .toString()
-                                                .contains(
-                                                    currentOrderStates[index]
-                                                        ['state'])) {
-                                              return true;
-                                            } else {
-                                              if (automation['EnablesStates'] ==
-                                                      '*' ||
-                                                  automation['EnablesStates'] ==
-                                                      null ||
-                                                  automation['EnablesStates'] ==
-                                                      '' ||
-                                                  automation['EnablesStates'] ==
-                                                      'GStatus=') {
-                                                return true;
-                                              }
-                                            }
-                                          }
-                                          return false;
-                                        })
-                                        .toList()
-                                        .map((command) => PopupMenuItem<Map>(
-                                              enabled: (currentOrderStates).any(
-                                                      (element) => command[
-                                                              'VisibleStates']
-                                                          .toString()
-                                                          .contains(
-                                                              element['state']))
-                                                  ? true
-                                                  : (command['VisibleStates'] ==
-                                                              '*' ||
-                                                          command['VisibleStates'] ==
-                                                              null ||
-                                                          command['VisibleStates'] ==
-                                                              '' ||
-                                                          command['VisibleStates'] ==
-                                                              'GStatus=')
-                                                      ? true
-                                                      : false,
-                                              value: {
-                                                'commandName':
-                                                    command['Name'].toString(),
-                                                'orderUid': Provider.of<Tickets>(context, listen: false).selectedTicketToModify
-                                                    .orders[orderIndex]
-                                                    .uid,
-                                              },
-                                              child: Text(
-                                                command['ButtonHeader']
-                                                    .toString(),
-                                              ),
-                                            ))
-                               
-                                  ],
-                                  child: ListTile(
-                                    tileColor: Colors.black.withOpacity(0.03),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 6,
-                                    ),
-                                    title: Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12.0),
-                                              child: Text(
-                                                Provider.of<Tickets>(context).selectedTicketToModify
-                                                    .orders[orderIndex]
-                                                    .quantity
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: normalTextStateColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  AutoSizeText(
-                                                    Provider.of<Tickets>(context).selectedTicketToModify
-                                                        .orders[orderIndex]
-                                                        .name,
-                                                    maxFontSize: 14,
-
-                                                    // maxLines:
-                                                    //     2,
-                                                    style: TextStyle(
-                                                      color:
-                                                          normalTextStateColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      AutoSizeText(
-                                                        Provider.of<Tickets>(context).selectedTicketToModify
-                                                            .orders[orderIndex]
-                                                            .portionName,
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        maxFontSize: 12,
-                                                        minFontSize: 8,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              secondaryTextStateColor,
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      AutoSizeText(
-                                                        "\$${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].price as double).toStringAsFixed(2)}",
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        maxFontSize: 12,
-                                                        minFontSize: 8,
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              secondaryTextStateColor,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  ListView.builder(
-                                                    primary: false,
-                                                    shrinkWrap: true,
-                                                    itemBuilder:
-                                                        (ctx, iterTags) {
-                                                      return Row(
-                                                        children: [
-                                                          AutoSizeText(
-                                                            '${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['quantity'] as double).toInt()} x ${Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['tag']}',
-                                                            maxFontSize: 12,
-                                                            minFontSize: 8,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  normalTextStateColor,
-                                                            ),
-                                                          ),
-                                                          Spacer(),
-                                                          AutoSizeText(
-                                                            '\$${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['price'] as double).toStringAsFixed(2)}',
-                                                            maxFontSize: 12,
-                                                            minFontSize: 8,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  normalTextStateColor,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                    itemCount: Provider.of<Tickets>(context).selectedTicketToModify
-                                                        .orders[orderIndex]
-                                                        .tags
-                                                        .length,
-                                                  ),
-                                                  Divider(),
-                                                  Row(children: [
-                                                    AutoSizeText(
-                                                      "Total",
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      maxFontSize: 12,
-                                                      minFontSize: 8,
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            totalTextStateColor,
-                                                      ),
-                                                    ),
-                                                    Spacer(),
-                                                    AutoSizeText(
-                                                      '\$${(orderTotalAmount as double).toStringAsFixed(2)}',
-                                                      maxLines: 1,
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      maxFontSize: 12,
-                                                      minFontSize: 8,
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            totalTextStateColor,
-                                                      ),
-                                                    ),
-                                                  ]),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 0,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
+                          // Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['quantity']
+                          return Column(
+                            key: Key(Provider.of<Tickets>(context)
+                                .selectedTicketToModify
+                                .tempOrders[orderIndex]['date']),
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Total:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Text(
+                                  'Nueva orden',
+                                ),
+                              ),
+                              PopupMenuButton<String>(
+                                onSelected: (String value) {
+                                  //TODO: REMOVER TEMP ORDER DE TEMP TICKET
+                                  // setState(() {
+                                  //   (
+                                  // });
+                                  setState(() {
+                                    Provider.of<Tickets>(context, listen: false)
+                                        .tempTickets
+                                        .firstWhere((tempTicket) =>
+                                            tempTicket.id.toString() ==
+                                            Provider.of<Tickets>(context)
+                                                .selectedTicketToModify
+                                                .id
+                                                .toString())
+                                        .tempOrders
+                                        .removeAt(orderIndex);
+                                  });
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<String>>[
+                                  const PopupMenuItem<String>(
+                                    value: 'Eliminar',
+                                    child: Text('Eliminar'),
+                                  ),
+                                ],
+                                child: ListTile(
+                                  tileColor: Colors.black.withOpacity(0.03),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 6,
+                                  ),
+                                  title: Container(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12.0),
+                                            child: Text(
+                                              Provider.of<Tickets>(context)
+                                                  .selectedTicketToModify
+                                                  .tempOrders[orderIndex]
+                                                      ['order']
+                                                  .quantity
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                AutoSizeText(
+                                                  Provider.of<Tickets>(context)
+                                                      .selectedTicketToModify
+                                                      .tempOrders[orderIndex]
+                                                          ['order']
+                                                      .name,
+                                                  maxFontSize: 14,
+                                                  // maxLines:
+                                                  //     2,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    AutoSizeText(
+                                                      Provider.of<Tickets>(
+                                                              context)
+                                                          .selectedTicketToModify
+                                                          .tempOrders[
+                                                              orderIndex]
+                                                              ['order']
+                                                          .portion['name'],
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign.left,
+                                                      maxFontSize: 12,
+                                                      minFontSize: 8,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black54,
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    AutoSizeText(
+                                                      "\$${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].portion['price'] as double).toStringAsFixed(2)}",
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign.left,
+                                                      maxFontSize: 12,
+                                                      minFontSize: 8,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black54,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                ListView.builder(
+                                                  primary: false,
+                                                  shrinkWrap: true,
+                                                  itemBuilder: (ctx, iterTags) {
+                                                    return Row(
+                                                      children: [
+                                                        AutoSizeText(
+                                                          '${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['quantity']).toInt()} x ${Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['tag']}',
+                                                          maxFontSize: 12,
+                                                          minFontSize: 8,
+                                                        ),
+                                                        Spacer(),
+                                                        AutoSizeText(
+                                                          '\$${(Provider.of<Tickets>(context).selectedTicketToModify.tempOrders[orderIndex]['order'].tags[iterTags]['price'] as double).toStringAsFixed(2)}',
+                                                          maxFontSize: 12,
+                                                          minFontSize: 8,
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                  itemCount: Provider.of<
+                                                          Tickets>(context)
+                                                      .selectedTicketToModify
+                                                      .tempOrders[orderIndex]
+                                                          ['order']
+                                                      .tags
+                                                      .length,
+                                                ),
+                                                Divider(),
+                                                Row(children: [
+                                                  AutoSizeText(
+                                                    "Total",
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.right,
+                                                    maxFontSize: 12,
+                                                    minFontSize: 8,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  AutoSizeText(
+                                                    '\$${(orderTotalAmount as double).toStringAsFixed(2)}',
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.right,
+                                                    maxFontSize: 12,
+                                                    minFontSize: 8,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                ]),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                      '\$${(Provider.of<Tickets>(context).selectedTicketToModify.totalAmount + ((Provider.of<Tickets>(context).selectedTicketToModify.tempOrders != null && Provider.of<Tickets>(context).selectedTicketToModify.tempOrders != []) ? (Provider.of<Tickets>(context).selectedTicketToModify.tempOrders as List).fold(0, (previousValue, element) => previousValue + element['total']) : 0)).toStringAsFixed(2)}'),
-                                ],
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
                               ),
                             ],
-                          ),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: Provider.of<Tickets>(context)
+                            .selectedTicketToModify
+                            .orders
+                            .length,
+                        itemBuilder: (ctx, orderIndex) {
+                          final orderTotalAmount =
+                              (Provider.of<Tickets>(context)
+                                          .selectedTicketToModify
+                                          .orders[orderIndex]
+                                          .tags as List)
+                                      .fold(
+                                          0,
+                                          (previousValue, element) =>
+                                              previousValue +
+                                              (element['price'] *
+                                                  element['quantity'])) +
+                                  (Provider.of<Tickets>(context)
+                                          .selectedTicketToModify
+                                          .orders[orderIndex]
+                                          .price *
+                                      Provider.of<Tickets>(context)
+                                          .selectedTicketToModify
+                                          .orders[orderIndex]
+                                          .quantity);
+
+                          //Setting states string
+                          String orderStates = '';
+                          List currentOrderStates = [];
+                          if (Provider.of<Tickets>(context)
+                              .currentOrdersStates
+                              .any((element) => element.toString().contains(
+                                  Provider.of<Tickets>(context)
+                                      .selectedTicketToModify
+                                      .orders[orderIndex]
+                                      .uid))) {
+                            currentOrderStates = Provider.of<Tickets>(context)
+                                .currentOrdersStates
+                                .firstWhere((element) => element
+                                    .toString()
+                                    .contains(Provider.of<Tickets>(context)
+                                        .selectedTicketToModify
+                                        .orders[orderIndex]
+                                        .uid))['currentState'];
+                            orderStates =
+                                '${currentOrderStates.firstWhere((state) => state["stateName"] == "Status")["state"]}' +
+                                    '${(currentOrderStates as List).firstWhere((element) => element['stateName'] == 'GStatus', orElse: () => null) != null ? ', ' + (currentOrderStates as List).firstWhere((element) => element['stateName'] == 'GStatus')['state'] : ''}';
+                            // orderStates = '';
+                          } else {
+                            currentOrderStates = Provider.of<Tickets>(context)
+                                .selectedTicketToModify
+                                .orders[orderIndex]
+                                .states;
+                            orderStates =
+                                '${Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states.firstWhere((state) => state["stateName"] == "Status")["state"]}' +
+                                    '${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states as List).firstWhere((element) => element['stateName'] == 'GStatus', orElse: () => null) != null ? ', ' + (Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].states as List).firstWhere((element) => element['stateName'] == 'GStatus')['state'] : ''}';
+                          }
+
+                          //SETTING COLOR FOR VOID TICKET
+
+                          final normalTextStateColor =
+                              orderStates.contains('Void')
+                                  ? Colors.grey
+                                  : Colors.black;
+                          final totalTextStateColor =
+                              orderStates.contains('Void')
+                                  ? Colors.grey
+                                  : Colors.blue;
+                          final secondaryTextStateColor =
+                              orderStates.contains('Void')
+                                  ? Colors.grey
+                                  : Colors.black54;
+
+                          return Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Text(orderStates
+                                    // ', ${Provider.of<Tickets>(context).commandsToExecute.where((element) => element.toString().contains(ticket["data"].orders[orderIndex].uid)).map((e) => e['commandName']).toList().join(', ')}',
+                                    ),
+                              ),
+                              PopupMenuButton<Map>(
+                                onSelected: (Map value) {
+                                  Provider.of<Tickets>(context, listen: false)
+                                      .executeAutomationCommandForOrder(
+                                    orderUid: value['orderUid'],
+                                    ticketId: Provider.of<Tickets>(context,
+                                            listen: false)
+                                        .selectedTicketToModify
+                                        .id,
+                                    automationName: value['commandName'],
+                                  );
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<Map>>[
+                                  ...Provider.of<Config>(context, listen: false)
+                                      .selectedOrderAutomation
+                                      .where((automation) {
+                                        final statesLength =
+                                            currentOrderStates.toList().length;
+                                        for (int index = 0;
+                                            index < statesLength;
+                                            index++) {
+                                          if (automation['EnablesStates']
+                                              .toString()
+                                              .contains(
+                                                  currentOrderStates[index]
+                                                      ['state'])) {
+                                            return true;
+                                          } else {
+                                            if (automation['EnablesStates'] ==
+                                                    '*' ||
+                                                automation['EnablesStates'] ==
+                                                    null ||
+                                                automation['EnablesStates'] ==
+                                                    '' ||
+                                                automation['EnablesStates'] ==
+                                                    'GStatus=') {
+                                              return true;
+                                            }
+                                          }
+                                        }
+                                        return false;
+                                      })
+                                      .toList()
+                                      .map((command) => PopupMenuItem<Map>(
+                                            enabled: (currentOrderStates).any(
+                                                    (element) => command[
+                                                            'VisibleStates']
+                                                        .toString()
+                                                        .contains(
+                                                            element['state']))
+                                                ? true
+                                                : (command['VisibleStates'] ==
+                                                            '*' ||
+                                                        command['VisibleStates'] ==
+                                                            null ||
+                                                        command['VisibleStates'] ==
+                                                            '' ||
+                                                        command['VisibleStates'] ==
+                                                            'GStatus=')
+                                                    ? true
+                                                    : false,
+                                            value: {
+                                              'commandName':
+                                                  command['Name'].toString(),
+                                              'orderUid': Provider.of<Tickets>(
+                                                      context,
+                                                      listen: false)
+                                                  .selectedTicketToModify
+                                                  .orders[orderIndex]
+                                                  .uid,
+                                            },
+                                            child: Text(
+                                              command['ButtonHeader']
+                                                  .toString(),
+                                            ),
+                                          ))
+                                ],
+                                child: ListTile(
+                                  tileColor: Colors.black.withOpacity(0.03),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 6,
+                                  ),
+                                  title: Container(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12.0),
+                                            child: Text(
+                                              Provider.of<Tickets>(context)
+                                                  .selectedTicketToModify
+                                                  .orders[orderIndex]
+                                                  .quantity
+                                                  .toString(),
+                                              style: TextStyle(
+                                                color: normalTextStateColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                AutoSizeText(
+                                                  Provider.of<Tickets>(context)
+                                                      .selectedTicketToModify
+                                                      .orders[orderIndex]
+                                                      .name,
+                                                  maxFontSize: 14,
+
+                                                  // maxLines:
+                                                  //     2,
+                                                  style: TextStyle(
+                                                    color: normalTextStateColor,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    AutoSizeText(
+                                                      Provider.of<Tickets>(
+                                                              context)
+                                                          .selectedTicketToModify
+                                                          .orders[orderIndex]
+                                                          .portionName,
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign.left,
+                                                      maxFontSize: 12,
+                                                      minFontSize: 8,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            secondaryTextStateColor,
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    AutoSizeText(
+                                                      "\$${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].price as double).toStringAsFixed(2)}",
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign.left,
+                                                      maxFontSize: 12,
+                                                      minFontSize: 8,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            secondaryTextStateColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                ListView.builder(
+                                                  primary: false,
+                                                  shrinkWrap: true,
+                                                  itemBuilder: (ctx, iterTags) {
+                                                    return Row(
+                                                      children: [
+                                                        AutoSizeText(
+                                                          '${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['quantity'] as double).toInt()} x ${Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['tag']}',
+                                                          maxFontSize: 12,
+                                                          minFontSize: 8,
+                                                          style: TextStyle(
+                                                            color:
+                                                                normalTextStateColor,
+                                                          ),
+                                                        ),
+                                                        Spacer(),
+                                                        AutoSizeText(
+                                                          '\$${(Provider.of<Tickets>(context).selectedTicketToModify.orders[orderIndex].tags[iterTags]['price'] as double).toStringAsFixed(2)}',
+                                                          maxFontSize: 12,
+                                                          minFontSize: 8,
+                                                          style: TextStyle(
+                                                            color:
+                                                                normalTextStateColor,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    );
+                                                  },
+                                                  itemCount: Provider.of<
+                                                          Tickets>(context)
+                                                      .selectedTicketToModify
+                                                      .orders[orderIndex]
+                                                      .tags
+                                                      .length,
+                                                ),
+                                                Divider(),
+                                                Row(children: [
+                                                  AutoSizeText(
+                                                    "Total",
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.right,
+                                                    maxFontSize: 12,
+                                                    minFontSize: 8,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          totalTextStateColor,
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  AutoSizeText(
+                                                    '\$${(orderTotalAmount as double).toStringAsFixed(2)}',
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.right,
+                                                    maxFontSize: 12,
+                                                    minFontSize: 8,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          totalTextStateColor,
+                                                    ),
+                                                  ),
+                                                ]),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total:',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                    '\$${(Provider.of<Tickets>(context).selectedTicketToModify.totalAmount + ((Provider.of<Tickets>(context).selectedTicketToModify.tempOrders != null && Provider.of<Tickets>(context).selectedTicketToModify.tempOrders != []) ? (Provider.of<Tickets>(context).selectedTicketToModify.tempOrders as List).fold(0, (previousValue, element) => previousValue + element['total']) : 0)).toStringAsFixed(2)}'),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    isExpanded: true,
+                      ),
+                    ],
                   ),
+                  isExpanded: true,
+                ),
               ],
             ),
           ],
@@ -1095,13 +1134,22 @@ class OptionsLeftPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     List commandsAvailableForTicket = [];
     if (Provider.of<Tickets>(context).selectedTicketToModify != null) {
-      commandsAvailableForTicket = Provider.of<Config>(context, listen: false)
-          .selectedTicketAutomation
-          .where((element) => element.toString().contains(
-              (Provider.of<Tickets>(context).selectedTicketToModify.states)
-                  .firstWhere(
-                      (element) => element['stateName'] == 'Status')['state']))
-          .toList();
+      if (Provider.of<Config>(context, listen: false)
+                  .selectedTicketAutomation !=
+              null ||
+          Provider.of<Config>(context, listen: false)
+              .selectedTicketAutomation
+              .isNotEmpty) {
+        commandsAvailableForTicket = Provider.of<Config>(context, listen: false)
+            .selectedTicketAutomation
+            .where((element) => element.toString().contains(
+                (Provider.of<Tickets>(context).selectedTicketToModify.states)
+                    .firstWhere((element) =>
+                        element['stateName'] == 'Status')['state']))
+            .toList();
+      } else {
+        commandsAvailableForTicket = [];
+      }
     }
     return Expanded(
       flex: 1,
@@ -1127,14 +1175,15 @@ class OptionsLeftPanel extends StatelessWidget {
                                 height: 60,
                                 width: double.infinity,
                                 child: FlatButton(
-                    color: Colors.white,
-                    textColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      side: BorderSide(
-                          color: Colors.black.withOpacity(0.1), width: 1.0),
-                    ),
-                    padding: EdgeInsets.all(12),
+                                  color: Colors.white,
+                                  textColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                    side: BorderSide(
+                                        color: Colors.black.withOpacity(0.1),
+                                        width: 1.0),
+                                  ),
+                                  padding: EdgeInsets.all(12),
                                   onPressed: () {
                                     showDialog(
                                       barrierDismissible: false,

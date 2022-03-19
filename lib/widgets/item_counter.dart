@@ -35,8 +35,9 @@ class _ItemCounterState extends State<ItemCounter> {
 
   @override
   void initState() {
-    counterController.addListener(saveCounter);
     counterController.text = '1';
+    counterController.addListener(saveCounter);
+    // counterController.text = '1';
     super.initState();
   }
 
@@ -66,8 +67,9 @@ class _ItemCounterState extends State<ItemCounter> {
 
   @override
   Widget build(BuildContext context) {
-    counterController.text =
-        Provider.of<Tickets>(context).orderCounter.toString();
+
+    // counterController.text =
+    //     Provider.of<Tickets>(context, listen: false).orderCounter.toString();
     return Row(
       children: [
         Container(
@@ -116,7 +118,7 @@ class _ItemCounterState extends State<ItemCounter> {
               controller: counterController,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(3),
-                WhitelistingTextInputFormatter.digitsOnly
+                FilteringTextInputFormatter.digitsOnly,
               ],
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -131,7 +133,7 @@ class _ItemCounterState extends State<ItemCounter> {
               textAlign: TextAlign.center,
               // maxLength: 3,
               maxLines: 1,
-
+              
               keyboardType: TextInputType.numberWithOptions(
                 decimal: false,
                 signed: false,

@@ -394,35 +394,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Provider.of<Config>(context).isAuth
-                              ? Colors.green
-                              : Colors.redAccent,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        margin: EdgeInsets.only(
-                          left: 30,
-                          right: 5,
-                        ),
-                        width: 10,
-                        height: 10,
-                      ),
-                      Provider.of<Config>(context).isAuth
-                          ? Text(
-                              'CONECTADO',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                              ),
-                            )
-                          : Text(
-                              'DESCONECTADO',
-                              style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     color: Provider.of<Config>(context).isAuth
+                      //         ? Colors.green
+                      //         : Colors.redAccent,
+                      //     borderRadius: BorderRadius.circular(2),
+                      //   ),
+                      //   margin: EdgeInsets.only(
+                      //     left: 30,
+                      //     right: 5,
+                      //   ),
+                      //   width: 10,
+                      //   height: 10,
+                      // ),
+                      // Provider.of<Config>(context).isAuth
+                      //     ? Text(
+                      //         'CONECTADO',
+                      //         style: TextStyle(
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Colors.green,
+                      //         ),
+                      //       )
+                      //     : Text(
+                      //         'DESCONECTADO',
+                      //         style: TextStyle(
+                      //           color: Colors.redAccent,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
                       Spacer(),
                       Padding(
                         padding: const EdgeInsets.only(

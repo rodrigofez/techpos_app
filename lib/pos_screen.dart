@@ -423,8 +423,6 @@ class _PosContentState extends State<PosContent> {
                                                     direction: DismissDirection
                                                         .startToEnd,
                                                     onDismissed: (direction) {
-                                                      print(
-                                                          'ANTES DE ERROOOOR: ${Provider.of<Tickets>(context, listen: false).tempOrders[iter]["id"]}');
                                                       Provider.of<
                                                                   Tickets>(
                                                               context,
@@ -438,9 +436,26 @@ class _PosContentState extends State<PosContent> {
                                                     },
                                                     key: Key(Provider.of<
                                                             Tickets>(context)
-                                                        .tempOrders[iter]['id']
+                                                        .tempOrders[iter]['date']
                                                         .toString()),
                                                     child: ListTile(
+                                                      onTap: () {
+                                                        //TODO: OPEN ORDER DIALOG OF TEMP ORDER
+                                                        // OrderDialog()
+                                                        //     .itemDialog(
+                                                        //   context,
+                                                        //   widget.buttonLabel,
+                                                        //   _deviceHeight,
+                                                        //   widget.portions,
+                                                        //   widget.productId,
+                                                        //   _formKey,
+                                                        // );
+                                                        print(Provider.of<
+                                                                    Tickets>(
+                                                                context,
+                                                                listen: false)
+                                                            .tempOrders[iter]);
+                                                      },
                                                       contentPadding:
                                                           EdgeInsets.symmetric(
                                                         vertical: 6,
